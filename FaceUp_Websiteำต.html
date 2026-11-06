@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="th" class="light" data-theme="light-pink">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>FaceUp Website - ระบบตรวจจับสีผิวและแนะนำเครื่องสำอาง</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#ec4899',
+                            lightBg: '#fdf2f5',
+                            darkBg: '#121212',
+                            darkCard: '#1e1e1e',
+                            darkBorder: '#2d2d2d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Fallback CSS for Offline / iPad Files App Viewer */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Sarabun', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dynamic Theme System Variables */
+        :root, [data-theme="light-pink"] {
+            --bg-main: #fdf2f5;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #fff0f4;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #fbcfe8;
+            --accent-color: #ec4899;
+            --accent-hover: #db2777;
+            --accent-light: #fce7f3;
+            --accent-text: #be185d;
+        }
+
+        [data-theme="dark-pink"] {
+            --bg-main: #121212;
+            --bg-header: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-subcard: #252525;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #2d2d2d;
+            --accent-color: #ec4899;
+            --accent-hover: #f472b6;
+            --accent-light: #831843;
+            --accent-text: #f472b6;
+        }
+
+        [data-theme="light-gray"] {
+            --bg-main: #f3f4f6;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #f9fafb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-color: #4b5563;
+            --accent-hover: #374151;
+            --accent-light: #e5e7eb;
+            --accent-text: #1f2937;
+        }
+
+        [data-theme="dark-gray"] {
+            --bg-main: #111827;
+            --bg-header: #1f2937;
+            --bg-card: #1f2937;
+            --bg-subcard: #374151;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --accent-color: #9ca3af;
+            --accent-hover: #d1d5db;
+            --accent-light: #374151;
+            --accent-text: #f3f4f6;
+        }
+
+        [data-theme="peach"] {
+            --bg-main: #fff7ed;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #ffedd5;
+            --text-main: #291e1a;
+            --text-muted: #786259;
+            --border-color: #fed7aa;
+            --accent-color: #f97316;
+            --accent-hover: #ea580c;
+            --accent-light: #ffedd5;
+            --accent-text: #c2410c;
+        }
+
+        [data-theme="lavender"] {
+            --bg-main: #f5f3ff;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #ede9fe;
+            --text-main: #1e1b4b;
+            --text-muted: #6b7280;
+            --border-color: #ddd6fe;
+            --accent-color: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --accent-light: #ede9fe;
+            --accent-text: #6d28d9;
+        }
+
+        [data-theme="mint"] {
+            --bg-main: #ecfdf5;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #d1fae5;
+            --text-main: #064e3b;
+            --text-muted: #4b5563;
+            --border-color: #a7f3d0;
+            --accent-color: #10b981;
+            --accent-hover: #059669;
+            --accent-light: #d1fae5;
+            --accent-text: #047857;
+        }
+
+        [data-theme="cocoa"] {
+            --bg-main: #fdf8f6;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subcard: #f7ebe8;
+            --text-main: #271a18;
+            --text-muted: #6e5a56;
+            --border-color: #e8d5cf;
+            --accent-color: #9a3412;
+            --accent-hover: #7c2d12;
+            --accent-light: #ffedd5;
+            --accent-text: #7c2d12;
+        }
+
+        /* Theme utility helper classes */
+        .theme-bg-main { background-color: var(--bg-main); }
+        .theme-bg-header { background-color: var(--bg-header); }
+        .theme-bg-card { background-color: var(--bg-card); }
+        .theme-bg-subcard { background-color: var(--bg-subcard); }
+        .theme-text-main { color: var(--text-main); }
+        .theme-text-muted { color: var(--text-muted); }
+        .theme-border { border-color: var(--border-color); }
+        .theme-accent-bg { background-color: var(--accent-color); }
+        .theme-accent-hover:hover { background-color: var(--accent-hover); }
+        .theme-accent-text { color: var(--accent-text); }
+        .theme-accent-light { background-color: var(--accent-light); }
+
+        /* Fallback Structural Layouts */
+        .header-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 16px; height: 64px; }
+        .main-wrapper { max-width: 1200px; margin: 0 auto; padding: 24px 16px; flex: 1; }
+        .grid-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .grid-3col { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+        /* Touch Improvements */
+        button, label, select, input {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="theme-bg-main theme-text-main min-h-screen flex flex-col justify-between selection:bg-pink-300">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Disclaimer Alert Banner -->
+    <div id="disclaimer-alert" class="theme-accent-light border-b theme-border transition-all duration-300 relative z-50">
+        <div class="max-w-6xl mx-auto py-2.5 px-4 sm:px-6">
+            <div class="flex items-start sm:items-center justify-between flex-wrap gap-2">
+                <div class="flex items-start space-x-2.5 flex-1">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 theme-accent-text mt-0.5 sm:mt-0 flex-shrink-0"></i>
+                    <p class="text-xs sm:text-sm theme-text-main leading-relaxed">
+                        <span class="font-bold theme-accent-text">คำเตือน:</span> เว็บไซต์นี้มีไว้เพียงแค่ช่วยแนะนำและลดเวลาในการเลือกเครื่องสำอางเท่านั้นไม่สามารถอ้างอิงจากความเป็นจริงได้ 100% ค่าสถานะสีผิวจะขึ้นอยู่กับแสงที่ตกกระทบบนใบหน้า
+                    </p>
+                </div>
+                <button onclick="dismissAlert()" class="theme-text-muted hover:theme-text-main focus:outline-none p-1.5 rounded-md transition-colors" title="ปิดคำเตือน">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="theme-bg-header border-b theme-border shadow-sm sticky top-0 z-40 transition-colors">
+        <div class="header-container">
+            <!-- Logo & Brand -->
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl animate-pulse">✨</span>
+                <span class="theme-accent-text font-extrabold text-xl tracking-tight">FaceUp</span>
+            </div>
+
+            <!-- Tab Switcher & Theme Control -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Navigation Tabs -->
+                <nav class="flex p-1 theme-bg-subcard rounded-xl border theme-border">
+                    <button id="tab-user" onclick="switchTab('user')" class="flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all theme-accent-bg text-white shadow-sm min-h-[38px]">
+                        <i data-lucide="scan" class="w-4 h-4"></i>
+                        <span>ผู้ใช้งาน</span>
+                    </button>
+                    <button id="tab-seller" onclick="switchTab('seller')" class="flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold theme-text-muted hover:theme-accent-text transition-all min-h-[38px]">
+                        <i data-lucide="store" class="w-4 h-4"></i>
+                        <span>ผู้ขาย</span>
+                    </button>
+                </nav>
+
+                <!-- ปุ่มเซฟหน้าเว็บ (.html) -->
+                <button onclick="exportHtmlWithData()" class="px-3 py-2 rounded-xl border theme-border theme-bg-subcard theme-accent-text hover:theme-accent-bg hover:text-white transition-all text-xs sm:text-sm font-bold shadow-sm flex items-center space-x-1.5 min-h-[38px]" title="ดาวน์โหลดไฟล์หน้าเว็บนี้พร้อมข้อมูลทั้งหมดไปเปิดในเครื่องอื่น">
+                    <i data-lucide="file-down" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">เซฟหน้าเว็บ (.html)</span>
+                </button>
+
+                <!-- Theme Selector Dropdown Menu -->
+                <div class="relative">
+                    <button onclick="toggleThemeDropdown()" class="p-2.5 rounded-xl border theme-border theme-bg-subcard theme-text-main hover:opacity-90 transition-all flex items-center space-x-1 text-xs sm:text-sm font-semibold shadow-sm min-h-[38px]" title="เลือกธีมสีเว็บไซต์">
+                        <span id="theme-current-icon">🌸</span>
+                        <span id="theme-current-label" class="hidden md:inline">ขาว-ชมพู</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 opacity-70"></i>
+                    </button>
+
+                    <!-- Theme Options Dropdown List (ซ่อนเป็นค่าเริ่มต้น) -->
+                    <div id="theme-dropdown" class="hidden absolute right-0 mt-2 w-56 theme-bg-card border theme-border rounded-xl shadow-2xl z-50 p-1.5 space-y-1 max-h-80 overflow-y-auto">
+                        <div class="text-[10px] uppercase tracking-wider font-bold theme-text-muted px-2.5 py-1">เลือกธีมสีเว็บไซต์</div>
+                        
+                        <button onclick="setTheme('light-pink')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition-colors">
+                            <span>🌸</span>
+                            <span>ขาว-ชมพู (Default)</span>
+                        </button>
+                        <button onclick="setTheme('dark-pink')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <span>🌙</span>
+                            <span>ดำ-ชมพู</span>
+                        </button>
+                        <button onclick="setTheme('light-gray')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <span>⚙️</span>
+                            <span>ขาว-เทา</span>
+                        </button>
+                        <button onclick="setTheme('dark-gray')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-gray-800 transition-colors">
+                            <span>🖤</span>
+                            <span>เทา-ดำ</span>
+                        </button>
+                        <button onclick="setTheme('peach')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-colors">
+                            <span>🍑</span>
+                            <span>ส้มพีช (Peach)</span>
+                        </button>
+                        <button onclick="setTheme('lavender')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-purple-50 dark:hover:bg-purple-950/40 transition-colors">
+                            <span>💜</span>
+                            <span>ม่วงลาเวนเดอร์</span>
+                        </button>
+                        <button onclick="setTheme('mint')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors">
+                            <span>🌿</span>
+                            <span>เขียวมินต์ (Mint)</span>
+                        </button>
+                        <button onclick="setTheme('cocoa')" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-colors">
+                            <span>🍫</span>
+                            <span>นู้ดโกโก้ (Cocoa)</span>
+                        </button>
+                        
+                        <div class="border-t theme-border pt-1">
+                            <button onclick="openCustomThemeModal()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2 theme-accent-text hover:theme-bg-subcard transition-colors">
+                                <i data-lucide="palette" class="w-4 h-4"></i>
+                                <span>ปรับแต่งสีธีมเอง...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-wrapper space-y-8">
+
+        <!-- ================= หน้าผู้ใช้งาน (User Section) ================= -->
+        <div id="section-user" class="space-y-8 fade-in">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold theme-text-main">UP and DROP สีผิวของคุณกับ FaceUp</h2>
+                <p class="text-xs sm:text-sm md:text-base theme-text-muted">เปิดกล้องและวางใบหน้าในกรอบเพื่อวิเคราะห์สีผิวและค้นหาเครื่องสำอางที่เหมาะสมที่สุด</p>
+            </div>
+
+            <div class="grid-2col items-start">
+                
+                <!-- กล้องสแกนสีผิว -->
+                <div class="theme-bg-card rounded-2xl p-5 sm:p-6 shadow-sm border theme-border space-y-4">
+                    <div class="relative bg-gray-900 rounded-2xl h-64 sm:h-80 md:h-96 flex flex-col items-center justify-center overflow-hidden border border-gray-700">
+                        <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"></video>
+                        <canvas id="detection-canvas" class="hidden"></canvas>
+                        
+                        <!-- เป้าสแกนใบหน้า -->
+                        <div id="camera-target" class="hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div class="w-36 h-36 sm:w-44 sm:h-44 border-2 border-dashed border-pink-400 rounded-full flex items-center justify-center bg-pink-500/10 backdrop-blur-[1px]">
+                                <span class="text-[11px] sm:text-xs text-pink-200 font-bold bg-black/70 px-2.5 py-1 rounded-full">วางใบหน้าตรงนี้</span>
+                            </div>
+                        </div>
+
+                        <!-- Placeholders เมื่อไม่ได้เปิดกล้อง -->
+                        <div id="camera-placeholder" class="text-center space-y-2 text-gray-400 p-4">
+                            <i data-lucide="camera-off" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto stroke-1 opacity-70"></i>
+                            <p class="text-sm sm:text-base font-medium">กล้องปิดอยู่</p>
+                            <p class="text-xs sm:text-sm text-gray-500">กดปุ่ม "เปิดกล้อง" เพื่อเริ่มวิเคราะห์สีผิว</p>
+                        </div>
+                    </div>
+
+                    <!-- ปุ่มควบคุมกล้อง -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-toggle-camera" onclick="toggleCamera()" class="py-3.5 bg-gray-800 hover:bg-gray-900 text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors flex items-center justify-center space-x-1.5 shadow-sm min-h-[44px]">
+                            <i data-lucide="video" class="w-4 h-4"></i>
+                            <span id="btn-camera-text">เปิดกล้อง</span>
+                        </button>
+
+                        <button onclick="analyzeSkinFromCamera()" class="py-3.5 theme-accent-bg theme-accent-hover text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors flex items-center justify-center space-x-1.5 shadow-sm min-h-[44px]">
+                            <i data-lucide="scan-face" class="w-4 h-4"></i>
+                            <span>วิเคราะห์สีผิว</span>
+                        </button>
+                    </div>
+
+                    <p class="text-center text-[11px] sm:text-xs theme-text-muted">
+                        💡 คำแนะนำ: อยู่ในพื้นที่สว่างและหลีกเลี่ยงแสงสะท้อนจ้าเพื่อความแม่นยำยิ่งขึ้น
+                    </p>
+                </div>
+
+                <!-- ผลการวิเคราะห์ -->
+                <div class="theme-bg-card rounded-2xl p-5 sm:p-6 shadow-sm border theme-border min-h-[360px] sm:min-h-[440px] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 pb-3 border-b theme-border theme-accent-text font-bold text-sm sm:text-base">
+                            <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                            <span>ผลการวิเคราะห์สีผิว</span>
+                        </div>
+
+                        <!-- เมื่อยังไม่มีผลลัพธ์ -->
+                        <div id="result-empty" class="flex flex-col items-center justify-center text-center p-8 space-y-3 theme-text-muted my-8">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full theme-bg-subcard flex items-center justify-center border theme-border">
+                                <i data-lucide="pipette" class="w-8 h-8 sm:w-10 sm:h-10 stroke-1"></i>
+                            </div>
+                            <p class="text-sm sm:text-base">กดเปิดกล้องและวางใบหน้าในกรอบเพื่อเริ่มตรวจจับสีผิว</p>
+                        </div>
+
+                        <!-- เมื่อตรวจพบผลลัพธ์ -->
+                        <div id="result-detected" class="hidden space-y-5 pt-4">
+                            <div class="theme-bg-subcard border theme-border rounded-xl p-5 text-center space-y-3">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <div id="color-preview-box" class="w-7 h-7 rounded-full border border-gray-300 shadow-inner"></div>
+                                    <span class="text-xs sm:text-sm font-bold theme-accent-text uppercase tracking-wider">โทนสีผิวที่ตรวจพบ</span>
+                                </div>
+                                <h4 id="detected-tone-name" class="text-2xl sm:text-3xl font-bold theme-text-main">Medium (ผิวสองสี)</h4>
+                                <p id="detected-hex" class="text-xs sm:text-sm theme-text-muted font-mono">RGB: (---, ---, ---)</p>
+                                <div class="flex justify-center gap-1.5 pt-1">
+                                    <span id="undertone-tag" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold theme-accent-light theme-accent-text">Warm Tone</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ตัวกรองเฉดสีผิว -->
+                    <div class="space-y-3 pt-4 border-t theme-border">
+                        <div class="flex justify-between items-center">
+                            <h5 class="text-xs sm:text-sm font-bold theme-text-muted uppercase">กรองตามสีผิวหน้า:</h5>
+                            <button onclick="filterUserShade('all')" class="text-xs sm:text-sm theme-accent-text font-semibold hover:underline min-h-[36px] flex items-center">รีเซ็ต</button>
+                        </div>
+                        <div class="flex flex-wrap gap-2" id="user-shade-pills">
+                            <!-- Pills Dynamic -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- รายการสินค้าแนะนำ -->
+            <div class="space-y-4 pt-4">
+                <div class="flex justify-between items-center flex-wrap gap-3">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 sm:w-6 sm:h-6 theme-accent-text"></i>
+                        <h3 class="text-lg sm:text-xl font-bold theme-text-main">เครื่องสำอางที่เหมาะสมกับคุณ</h3>
+                    </div>
+
+                    <div class="flex items-center flex-wrap gap-3">
+                        <!-- ตัวเลือกรองรับการเลือกแบรนด์ที่ต้องการ -->
+                        <div class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800/50 p-2 px-3 rounded-xl border theme-border">
+                            <i data-lucide="tag" class="w-4 h-4 theme-accent-text"></i>
+                            <label for="user-brand-select" class="text-xs sm:text-sm theme-text-muted font-bold whitespace-nowrap">เลือกแบรนด์:</label>
+                            <select id="user-brand-select" onchange="filterUserBrand(this.value)" class="text-xs sm:text-sm p-1.5 rounded-lg border theme-border theme-bg-card theme-text-main font-semibold focus:outline-none focus:ring-1 focus:ring-pink-400 min-h-[36px]">
+                                <option value="all">ทุกแบรนด์</option>
+                            </select>
+                        </div>
+
+                        <span class="text-xs sm:text-sm theme-text-muted font-medium bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-xl border theme-border" id="product-count-label">แสดงทั้งหมด</span>
+                    </div>
+                </div>
+
+                <div id="user-product-grid" class="grid-3col">
+                    <!-- Cards Dynamically Loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= หน้าผู้ขาย (Seller Section) ================= -->
+        <div id="section-seller" class="space-y-8 hidden fade-in">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold theme-text-main">ระบบจัดการสินค้า (Seller)</h2>
+                <p class="text-xs sm:text-sm md:text-base theme-text-muted">เพิ่มสินค้าใหม่และกำหนดสีผิวที่เหมาะสมเพื่อให้ระบบนำไปแนะนำลูกค้า</p>
+            </div>
+
+            <div class="grid-2col">
+                <!-- ฟอร์มเพิ่มเครื่องสำอาง -->
+                <div class="theme-bg-card rounded-2xl p-5 sm:p-6 shadow-sm border theme-border space-y-4">
+                    <div class="flex items-center space-x-2 pb-3 border-b theme-border theme-accent-text font-bold text-sm sm:text-base">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        <span>เพิ่มสินค้าใหม่</span>
+                    </div>
+
+                    <form onsubmit="addNewProduct(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold theme-text-muted mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="input-name" required placeholder="เช่น ลูน่าทาแตด" class="w-full text-xs sm:text-sm p-3 rounded-xl border theme-border theme-bg-subcard theme-text-main focus:outline-none focus:ring-1 focus:ring-pink-400 min-h-[44px]">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold theme-text-muted mb-1">แบรนด์ / ผู้ขาย</label>
+                            <input type="text" id="input-brand" required placeholder="เช่น Luna tadd sai" class="w-full text-xs sm:text-sm p-3 rounded-xl border theme-border theme-bg-subcard theme-text-main focus:outline-none focus:ring-1 focus:ring-pink-400 min-h-[44px]">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold theme-text-muted mb-1">ประเภทเครื่องสำอาง</label>
+                            <select id="input-category" class="w-full text-xs sm:text-sm p-3 rounded-xl border theme-border theme-bg-subcard theme-text-main focus:outline-none focus:ring-1 focus:ring-pink-400 min-h-[44px]">
+                                <option value="Foundation">Foundation (รองพื้น)</option>
+                                <option value="Cushion">Cushion (คุชชั่น)</option>
+                                <option value="Concealer">Concealer (คอนซีลเลอร์)</option>
+                                <option value="Bronzer">Bronzer (บรอนเซอร์)</option>
+                                <option value="Lipstick">Lipstick (ลิปสติก)</option>
+                            </select>
+                        </div>
+
+                        <!-- เลือกสีผิวที่เข้ากัน -->
+                        <div class="space-y-2 pt-2">
+                            <div class="flex justify-between items-center">
+                                <label class="block text-xs sm:text-sm font-semibold theme-text-muted">หมวดหมู่สีผิวที่เหมาะสม (เลือกได้หลายข้อ):</label>
+                                <button type="button" onclick="toggleAddSkinToneForm()" class="text-xs theme-accent-text font-bold hover:underline flex items-center space-x-1 min-h-[36px]">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                    <span>เพิ่มสีผิวใหม่</span>
+                                </button>
+                            </div>
+
+                            <!-- Form เพิ่มเฉดสีผิวใหม่ -->
+                            <div id="add-skintone-box" class="hidden p-3 rounded-xl border theme-border bg-gray-50 dark:bg-gray-800 space-y-2">
+                                <input type="text" id="new-tone-key" placeholder="รหัสเฉดสี (เช่น Olive)" class="w-full text-xs sm:text-sm p-2.5 rounded-lg border theme-border theme-bg-subcard theme-text-main min-h-[40px]">
+                                <input type="text" id="new-tone-label" placeholder="คำอธิบาย (เช่น ผิวแทนโทนโอลิฟ)" class="w-full text-xs sm:text-sm p-2.5 rounded-lg border theme-border theme-bg-subcard theme-text-main min-h-[40px]">
+                                <button type="button" onclick="addNewSkinToneOption()" class="w-full py-2.5 theme-accent-bg text-white text-xs sm:text-sm font-semibold rounded-lg min-h-[40px]">บันทึกเฉดสี</button>
+                            </div>
+
+                            <div id="seller-skintone-checkboxes" class="space-y-2 max-h-48 overflow-y-auto p-3 border theme-border rounded-xl theme-bg-subcard text-xs sm:text-sm">
+                                <!-- Checkboxes dynamic -->
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 theme-accent-bg theme-accent-hover text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors shadow-sm flex items-center justify-center space-x-2 min-h-[48px]">
+                            <i data-lucide="save" class="w-4 h-4"></i>
+                            <span>บันทึกสินค้า</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ตารางคลังสินค้า -->
+                <div class="theme-bg-card rounded-2xl p-5 sm:p-6 shadow-sm border theme-border space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b theme-border">
+                            <div class="flex items-center space-x-2 theme-accent-text font-bold text-sm sm:text-base">
+                                <i data-lucide="package" class="w-5 h-5"></i>
+                                <span>คลังสินค้าทั้งหมด</span>
+                            </div>
+                            <span id="seller-total-badge" class="text-xs sm:text-sm font-semibold theme-bg-subcard theme-accent-text px-3 py-1 rounded-full border theme-border">0 รายการ</span>
+                        </div>
+
+                        <div id="seller-inventory-grid" class="grid-2col max-h-[520px] overflow-y-auto pr-1">
+                            <!-- Seller inventory list dynamic -->
+                        </div>
+                    </div>
+
+                    <!-- Backup Data Actions -->
+                    <div class="pt-4 border-t theme-border flex flex-wrap justify-between items-center gap-2">
+                        <span class="text-xs sm:text-sm theme-text-muted">สำรองและโหลดข้อมูลสินค้า:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="exportHtmlWithData()" class="px-3.5 py-2 border theme-border rounded-lg text-xs sm:text-sm font-semibold theme-accent-bg text-white hover:opacity-90 flex items-center space-x-1 shadow-sm min-h-[38px]">
+                                <i data-lucide="file-down" class="w-4 h-4"></i>
+                                <span>เซฟไฟล์ .html</span>
+                            </button>
+                            <button onclick="exportDataToFile()" class="px-3.5 py-2 border theme-border rounded-lg text-xs sm:text-sm font-semibold theme-bg-subcard hover:opacity-80 flex items-center space-x-1 min-h-[38px]">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>ส่งออก JSON</span>
+                            </button>
+                            <label class="px-3.5 py-2 border theme-border rounded-lg text-xs sm:text-sm font-semibold theme-bg-subcard hover:opacity-80 flex items-center space-x-1 cursor-pointer min-h-[38px]">
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+                                <span>นำเข้า JSON</span>
+                                <input type="file" onchange="importDataFromFile(event)" accept=".json" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom Theme Editor Modal -->
+    <div id="custom-theme-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="theme-bg-card border theme-border rounded-2xl p-6 w-full max-w-md shadow-2xl space-y-4 fade-in">
+            <div class="flex justify-between items-center pb-2 border-b theme-border">
+                <div class="flex items-center space-x-2 font-bold theme-accent-text text-base">
+                    <i data-lucide="palette" class="w-5 h-5"></i>
+                    <span>กำหนดสีธีมเว็บไซต์ด้วยตนเอง</span>
+                </div>
+                <button onclick="closeCustomThemeModal()" class="theme-text-muted hover:theme-text-main p-1.5">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs sm:text-sm">
+                <div>
+                    <label class="block font-semibold theme-text-muted mb-1">สีพื้นหลังหลัก (Main Background)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="theme-color-bg" value="#fdf2f5" onchange="applyCustomThemeFromInputs()" class="w-10 h-10 rounded-lg border theme-border cursor-pointer">
+                        <span id="theme-color-bg-val" class="font-mono theme-text-muted">#fdf2f5</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold theme-text-muted mb-1">สีการ์ด/กล่องข้อความ (Card Background)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="theme-color-card" value="#ffffff" onchange="applyCustomThemeFromInputs()" class="w-10 h-10 rounded-lg border theme-border cursor-pointer">
+                        <span id="theme-color-card-val" class="font-mono theme-text-muted">#ffffff</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold theme-text-muted mb-1">สีไฮไลท์/ปุ่มกด (Accent Primary Color)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="theme-color-accent" value="#ec4899" onchange="applyCustomThemeFromInputs()" class="w-10 h-10 rounded-lg border theme-border cursor-pointer">
+                        <span id="theme-color-accent-val" class="font-mono theme-text-muted">#ec4899</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold theme-text-muted mb-1">สีตัวหนังสือหลัก (Text Color)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="theme-color-text" value="#1f2937" onchange="applyCustomThemeFromInputs()" class="w-10 h-10 rounded-lg border theme-border cursor-pointer">
+                        <span id="theme-color-text-val" class="font-mono theme-text-muted">#1f2937</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2 flex justify-end space-x-2">
+                <button onclick="resetCustomTheme()" class="px-4 py-2.5 text-xs sm:text-sm font-semibold border theme-border rounded-xl theme-text-muted hover:theme-text-main min-h-[40px]">
+                    ล้างค่ากลับตั้งต้น
+                </button>
+                <button onclick="closeCustomThemeModal()" class="px-4 py-2.5 text-xs sm:text-sm font-semibold theme-accent-bg text-white rounded-xl shadow-sm min-h-[40px]">
+                    เสร็จสิ้น
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="theme-bg-header border-t theme-border py-6 text-center text-xs sm:text-sm theme-text-muted transition-colors">
+        <p>© 2026 FaceUp Website. All rights reserved. - ระบบตรวจจับสีผิวและจัดการเครื่องสำอาง</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const STORAGE_PRODUCTS_KEY = 'faceup_products_v9';
+        const STORAGE_SKINTONES_KEY = 'faceup_skintones_v9';
+        const STORAGE_THEME_KEY = 'faceup_theme_v9';
+        const STORAGE_CUSTOM_THEME = 'faceup_custom_theme_v3';
+        
+        let FILE_VERSION_TIMESTAMP = 1700000000000;
+
+        // Standard Skin Tone Presets
+        let defaultSkinTones = [
+            { id: "Albinism", key: "Albinism", label: "Albinism (ผิวขาวเผือก)" },
+            { id: "Fair", key: "Fair", label: "Fair (ผิวขาวมาก)" },
+            { id: "Light", key: "Light", label: "Light (ผิวขาว)" },
+            { id: "Medium", key: "Medium", label: "Medium (ผิวสองสี)" },
+            { id: "Tan", key: "Tan", label: "Tan (ผิวแทน)" },
+            { id: "Deep", key: "Deep", label: "Deep (ผิวเข้ม)" }
+        ];
+
+        // Sample Product Items
+        let defaultProducts = [
+            { id: "prod-1", name: "ลูน่าทาแตด", brand: "Luna tadd sai", category: "Foundation", shades: ["Fair", "Medium"] },
+            { id: "prod-2", name: "Flawless Concealer Pro", brand: "GlowUp", category: "Concealer", shades: ["Fair", "Light", "Medium"] },
+            { id: "prod-3", name: "Matte Cushion SPF50", brand: "K-Beauty", category: "Cushion", shades: ["Medium", "Tan"] },
+            { id: "prod-4", name: "Sun-kissed Velvet Bronzer", brand: "BeautyCo", category: "Bronzer", shades: ["Medium", "Tan", "Deep"] }
+        ];
+
+        window.skinToneList = [];
+        window.inventory = [];
+        window.selectedUserShade = 'all';
+        window.selectedUserBrand = 'all';
+        let isCameraActive = false;
+        let webcamStream = null;
+
+        const themesMap = {
+            'light-pink': { icon: '🌸', label: 'ขาว-ชมพู' },
+            'dark-pink': { icon: '🌙', label: 'ดำ-ชมพู' },
+            'light-gray': { icon: '⚙️', label: 'ขาว-เทา' },
+            'dark-gray': { icon: '🖤', label: 'เทา-ดำ' },
+            'peach': { icon: '🍑', label: 'ส้มพีช' },
+            'lavender': { icon: '💜', label: 'ม่วงลาเวนเดอร์' },
+            'mint': { icon: '🌿', label: 'เขียวมินต์' },
+            'cocoa': { icon: '🍫', label: 'นู้ดโกโก้' },
+            'custom': { icon: '🎨', label: 'ธีมส่วนตัว' }
+        };
+
+        function toggleThemeDropdown() {
+            const menu = document.getElementById('theme-dropdown');
+            menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('theme-dropdown');
+            const btn = e.target.closest('button[onclick="toggleThemeDropdown()"]');
+            if (!btn && dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        function setTheme(themeName, save = true) {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', themeName);
+
+            if (themeName !== 'custom') {
+                html.removeAttribute('style');
+            }
+
+            const info = themesMap[themeName] || themesMap['light-pink'];
+            document.getElementById('theme-current-icon').innerText = info.icon;
+            document.getElementById('theme-current-label').innerText = info.label;
+
+            if (save) {
+                localStorage.setItem(STORAGE_THEME_KEY, themeName);
+                showToast(`เปลี่ยนธีมสีเป็น "${info.label}" เรียบร้อยแล้ว`);
+            }
+
+            document.getElementById('theme-dropdown').classList.add('hidden');
+        }
+
+        function openCustomThemeModal() {
+            document.getElementById('custom-theme-modal').classList.remove('hidden');
+            document.getElementById('theme-dropdown').classList.add('hidden');
+        }
+
+        function closeCustomThemeModal() {
+            document.getElementById('custom-theme-modal').classList.add('hidden');
+        }
+
+        function applyCustomThemeFromInputs() {
+            const bg = document.getElementById('theme-color-bg').value;
+            const card = document.getElementById('theme-color-card').value;
+            const accent = document.getElementById('theme-color-accent').value;
+            const text = document.getElementById('theme-color-text').value;
+
+            document.getElementById('theme-color-bg-val').innerText = bg;
+            document.getElementById('theme-color-card-val').innerText = card;
+            document.getElementById('theme-color-accent-val').innerText = accent;
+            document.getElementById('theme-color-text-val').innerText = text;
+
+            const customObj = { bg, card, accent, text };
+            applyCustomTheme(customObj);
+            localStorage.setItem(STORAGE_CUSTOM_THEME, JSON.stringify(customObj));
+            localStorage.setItem(STORAGE_THEME_KEY, 'custom');
+        }
+
+        function applyCustomTheme(obj) {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', 'custom');
+            html.style.setProperty('--bg-main', obj.bg);
+            html.style.setProperty('--bg-header', obj.card);
+            html.style.setProperty('--bg-card', obj.card);
+            html.style.setProperty('--bg-subcard', obj.bg);
+            html.style.setProperty('--text-main', obj.text);
+            html.style.setProperty('--border-color', obj.accent + '44');
+            html.style.setProperty('--accent-color', obj.accent);
+            html.style.setProperty('--accent-hover', obj.accent);
+            html.style.setProperty('--accent-light', obj.accent + '22');
+            html.style.setProperty('--accent-text', obj.accent);
+
+            document.getElementById('theme-current-icon').innerText = '🎨';
+            document.getElementById('theme-current-label').innerText = 'ธีมส่วนตัว';
+        }
+
+        function resetCustomTheme() {
+            localStorage.removeItem(STORAGE_CUSTOM_THEME);
+            setTheme('light-pink');
+            closeCustomThemeModal();
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-3.5 px-5 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold text-white pointer-events-auto flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 ${type === 'error' ? 'bg-red-500' : 'theme-accent-bg'}`;
+            toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check-circle-2'}" class="w-4 h-4"></i><span>${message}</span>`;
+            
+            container.appendChild(toast);
+            if (window.lucide) lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function initTheme() {
+            const savedCustom = localStorage.getItem(STORAGE_CUSTOM_THEME);
+            const savedTheme = localStorage.getItem(STORAGE_THEME_KEY) || 'light-pink';
+            
+            if (savedCustom && savedTheme === 'custom') {
+                applyCustomTheme(JSON.parse(savedCustom));
+            } else {
+                setTheme(savedTheme, false);
+            }
+        }
+
+        function loadData() {
+            const localVersion = parseInt(localStorage.getItem('faceup_data_version') || '0', 10);
+
+            if (FILE_VERSION_TIMESTAMP > localVersion) {
+                window.skinToneList = defaultSkinTones;
+                window.inventory = defaultProducts;
+                window.saveDataLocal();
+                localStorage.setItem('faceup_data_version', FILE_VERSION_TIMESTAMP.toString());
+            } else {
+                const savedTones = localStorage.getItem(STORAGE_SKINTONES_KEY);
+                window.skinToneList = savedTones ? JSON.parse(savedTones) : defaultSkinTones;
+
+                const savedProds = localStorage.getItem(STORAGE_PRODUCTS_KEY);
+                window.inventory = savedProds ? JSON.parse(savedProds) : defaultProducts;
+            }
+        }
+
+        window.saveDataLocal = function() {
+            localStorage.setItem(STORAGE_SKINTONES_KEY, JSON.stringify(window.skinToneList));
+            localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(window.inventory));
+        };
+
+        window.exportHtmlWithData = function() {
+            const now = Date.now();
+            let htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+            htmlContent = htmlContent.replace(
+                /let FILE_VERSION_TIMESTAMP = \d+;/,
+                `let FILE_VERSION_TIMESTAMP = ${now};`
+            );
+
+            htmlContent = htmlContent.replace(
+                /let defaultSkinTones = \[[\s\S]*?\];/,
+                `let defaultSkinTones = ${JSON.stringify(window.skinToneList, null, 12)};`
+            );
+
+            htmlContent = htmlContent.replace(
+                /let defaultProducts = \[[\s\S]*?\];/,
+                `let defaultProducts = ${JSON.stringify(window.inventory, null, 12)};`
+            );
+
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", url);
+            downloadAnchor.setAttribute("download", `FaceUp_Website_Saved.html`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            URL.revokeObjectURL(url);
+
+            showToast("บันทึกไฟล์หน้าเว็บ (.html) พร้อมข้อมูลเรียบร้อยแล้ว!", "info");
+        };
+
+        window.exportDataToFile = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                skinTones: window.skinToneList,
+                products: window.inventory
+            }));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `faceup_backup_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("ส่งออกไฟล์สำรองเรียบร้อยแล้ว");
+        };
+
+        window.importDataFromFile = function(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.skinTones && imported.products) {
+                        window.skinToneList = imported.skinTones;
+                        window.inventory = imported.products;
+                        window.saveDataLocal();
+                        renderSkinToneCheckboxes();
+                        renderUserShadePills();
+                        renderBrandOptions();
+                        renderUserProducts();
+                        renderSellerInventory();
+                        showToast("นำเข้าข้อมูลสำเร็จแล้ว!");
+                    }
+                } catch (err) {
+                    showToast("รูปแบบไฟล์ JSON ไม่ถูกต้อง", 'error');
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            loadData();
+            if (window.lucide) lucide.createIcons();
+            renderSkinToneCheckboxes();
+            renderUserShadePills();
+            renderBrandOptions();
+            renderUserProducts();
+            renderSellerInventory();
+        });
+
+        window.dismissAlert = function() {
+            const alertBox = document.getElementById('disclaimer-alert');
+            alertBox.style.opacity = '0';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 300);
+        };
+
+        window.switchTab = function(tab) {
+            const btnUser = document.getElementById('tab-user');
+            const btnSeller = document.getElementById('tab-seller');
+            const secUser = document.getElementById('section-user');
+            const secSeller = document.getElementById('section-seller');
+
+            if (tab === 'user') {
+                btnUser.className = "flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all theme-accent-bg text-white shadow-sm min-h-[38px]";
+                btnSeller.className = "flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold theme-text-muted hover:theme-accent-text transition-all min-h-[38px]";
+                secUser.classList.remove('hidden');
+                secSeller.classList.add('hidden');
+            } else {
+                btnSeller.className = "flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all theme-accent-bg text-white shadow-sm min-h-[38px]";
+                btnUser.className = "flex items-center space-x-1 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold theme-text-muted hover:theme-accent-text transition-all min-h-[38px]";
+                secSeller.classList.remove('hidden');
+                secUser.classList.add('hidden');
+            }
+        };
+
+        // Webcam Logic
+        window.toggleCamera = async function() {
+            const video = document.getElementById('webcam');
+            const placeholder = document.getElementById('camera-placeholder');
+            const target = document.getElementById('camera-target');
+            const btnText = document.getElementById('btn-camera-text');
+
+            if (!isCameraActive) {
+                try {
+                    const constraints = { 
+                        video: { 
+                            facingMode: "user",
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
+                        } 
+                    };
+                    webcamStream = await navigator.mediaDevices.getUserMedia(constraints);
+                    video.srcObject = webcamStream;
+                    video.classList.remove('hidden');
+                    target.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    btnText.innerText = "ปิดกล้อง";
+                    isCameraActive = true;
+                    showToast("เปิดกล้องเรียบร้อย");
+                } catch (err) {
+                    showToast("เปิดโหมดจำลองการวิเคราะห์เนื่องจากกล้องถูกบล็อกบนเบราว์เซอร์");
+                    simulateSkinToneAnalysis();
+                }
+            } else {
+                if (webcamStream) {
+                    webcamStream.getTracks().forEach(track => track.stop());
+                }
+                video.classList.add('hidden');
+                target.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                btnText.innerText = "เปิดกล้อง";
+                isCameraActive = false;
+                showToast("ปิดกล้องแล้ว");
+            }
+        };
+
+        window.analyzeSkinFromCamera = function() {
+            if (!isCameraActive) {
+                simulateSkinToneAnalysis();
+                return;
+            }
+
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('detection-canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const centerX = Math.floor(canvas.width / 2);
+            const centerY = Math.floor(canvas.height / 2);
+            const pixelData = ctx.getImageData(centerX - 15, centerY - 15, 30, 30).data;
+
+            let totalR = 0, totalG = 0, totalB = 0, count = 0;
+            for (let i = 0; i < pixelData.length; i += 4) {
+                totalR += pixelData[i];
+                totalG += pixelData[i + 1];
+                totalB += pixelData[i + 2];
+                count++;
+            }
+
+            const avgR = Math.round(totalR / count);
+            const avgG = Math.round(totalG / count);
+            const avgB = Math.round(totalB / count);
+
+            displayAnalysisResult(avgR, avgG, avgB);
+        };
+
+        function simulateSkinToneAnalysis() {
+            const presets = [
+                { r: 245, g: 215, b: 200 }, // Fair
+                { r: 230, g: 190, b: 165 }, // Light
+                { r: 205, g: 155, b: 125 }, // Medium
+                { r: 160, g: 110, b: 80 },  // Tan
+                { r: 100, g: 65, b: 45 }    // Deep
+            ];
+            const randomPreset = presets[Math.floor(Math.random() * presets.length)];
+            displayAnalysisResult(randomPreset.r, randomPreset.g, randomPreset.b);
+        }
+
+        function displayAnalysisResult(avgR, avgG, avgB) {
+            const brightness = (avgR * 299 + avgG * 587 + avgB * 114) / 1000;
+
+            let detectedTone = "Medium";
+            if (brightness > 200) detectedTone = "Fair";
+            else if (brightness > 165) detectedTone = "Light";
+            else if (brightness > 125) detectedTone = "Medium";
+            else if (brightness > 85) detectedTone = "Tan";
+            else detectedTone = "Deep";
+
+            const undertone = (avgR > avgB) ? "Warm Tone (โทนอุ่น)" : "Cool Tone (โทนเย็น)";
+
+            document.getElementById('result-empty').classList.add('hidden');
+            document.getElementById('result-detected').classList.remove('hidden');
+
+            document.getElementById('color-preview-box').style.backgroundColor = `rgb(${avgR}, ${avgG}, ${avgB})`;
+            document.getElementById('detected-tone-name').innerText = `${detectedTone} (${getLabelByKey(detectedTone)})`;
+            document.getElementById('detected-hex').innerText = `RGB: (${avgR}, ${avgG}, ${avgB})`;
+            document.getElementById('undertone-tag').innerText = undertone;
+
+            filterUserShade(detectedTone);
+            showToast(`วิเคราะห์ได้สีผิวเฉด ${detectedTone}`);
+        }
+
+        function getLabelByKey(key) {
+            const tone = window.skinToneList.find(t => t.key === key);
+            return tone ? tone.label.split('(')[1]?.replace(')', '') || key : key;
+        }
+
+        window.addNewProduct = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-name').value;
+            const brand = document.getElementById('input-brand').value;
+            const category = document.getElementById('input-category').value;
+
+            const selectedShades = [];
+            const checkboxes = document.querySelectorAll('input[name="skintone"]:checked');
+            checkboxes.forEach(cb => selectedShades.push(cb.value));
+
+            if (selectedShades.length === 0) {
+                showToast("กรุณาเลือกเฉดสีผิวอย่างน้อย 1 รายการ", 'error');
+                return;
+            }
+
+            const docId = 'prod-' + Date.now();
+            const newProd = { id: docId, name, brand, category, shades: selectedShades };
+
+            window.inventory.unshift(newProd);
+            window.saveDataLocal();
+
+            document.getElementById('input-name').value = '';
+            document.getElementById('input-brand').value = '';
+
+            renderBrandOptions();
+            renderSellerInventory();
+            renderUserProducts();
+            showToast("เพิ่มสินค้าสำเร็จแล้ว");
+        };
+
+        window.deleteProduct = function(id) {
+            window.inventory = window.inventory.filter(p => p.id !== id);
+            window.saveDataLocal();
+
+            renderBrandOptions();
+            renderSellerInventory();
+            renderUserProducts();
+            showToast("ลบสินค้าเรียบร้อยแล้ว");
+        };
+
+        window.toggleAddSkinToneForm = function() {
+            document.getElementById('add-skintone-box').classList.toggle('hidden');
+        };
+
+        window.addNewSkinToneOption = function() {
+            const keyInput = document.getElementById('new-tone-key').value.trim();
+            const labelInput = document.getElementById('new-tone-label').value.trim();
+
+            if (!keyInput) {
+                showToast("กรุณากรอกรหัสเฉดสีผิว", 'error');
+                return;
+            }
+
+            const label = labelInput ? `${keyInput} (${labelInput})` : keyInput;
+
+            if (window.skinToneList.some(t => t.key.toLowerCase() === keyInput.toLowerCase())) {
+                showToast("มีเฉดสีผิวนี่อยู่ในระบบแล้ว", 'error');
+                return;
+            }
+
+            const newTone = { id: keyInput, key: keyInput, label };
+            window.skinToneList.push(newTone);
+            window.saveDataLocal();
+
+            document.getElementById('new-tone-key').value = '';
+            document.getElementById('new-tone-label').value = '';
+            toggleAddSkinToneForm();
+
+            renderSkinToneCheckboxes();
+            renderUserShadePills();
+            showToast(`เพิ่มเฉดสี "${keyInput}" สำเร็จ`);
+        };
+
+        window.removeSkinToneOption = function(key) {
+            if (window.skinToneList.length <= 1) {
+                showToast("ต้องมีเฉดสีผิวอย่างน้อย 1 รายการ", 'error');
+                return;
+            }
+            window.skinToneList = window.skinToneList.filter(t => t.key !== key);
+            window.saveDataLocal();
+
+            renderSkinToneCheckboxes();
+            renderUserShadePills();
+            showToast(`ลบเฉดสี "${key}" เรียบร้อย`);
+        };
+
+        window.renderSkinToneCheckboxes = function() {
+            const container = document.getElementById('seller-skintone-checkboxes');
+            container.innerHTML = '';
+
+            window.skinToneList.forEach((tone) => {
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between group py-1.5 border-b border-gray-100 dark:border-gray-800 last:border-0";
+                item.innerHTML = `
+                    <label class="flex items-center space-x-2.5 cursor-pointer flex-1 py-1">
+                        <input type="checkbox" name="skintone" value="${tone.key}" class="rounded text-pink-500 focus:ring-pink-400 w-4 h-4" ${tone.key === 'Medium' ? 'checked' : ''}>
+                        <span class="theme-text-main font-medium text-xs sm:text-sm">${tone.label}</span>
+                    </label>
+                    <button type="button" onclick="removeSkinToneOption('${tone.key}')" class="theme-text-muted hover:text-red-500 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity p-1.5">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        };
+
+        window.renderUserShadePills = function() {
+            const container = document.getElementById('user-shade-pills');
+            container.innerHTML = `
+                <button onclick="filterUserShade('all')" class="shade-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold min-h-[36px] ${window.selectedUserShade === 'all' ? 'theme-accent-bg text-white shadow-sm' : 'theme-bg-subcard theme-accent-text border theme-border'}">ทั้งหมด</button>
+            `;
+
+            window.skinToneList.forEach(tone => {
+                const btn = document.createElement('button');
+                btn.onclick = () => filterUserShade(tone.key);
+                btn.className = `shade-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold min-h-[36px] ${window.selectedUserShade === tone.key ? 'theme-accent-bg text-white shadow-sm' : 'theme-bg-subcard theme-accent-text border theme-border'}`;
+                btn.innerText = tone.key;
+                container.appendChild(btn);
+            });
+        };
+
+        window.renderBrandOptions = function() {
+            const select = document.getElementById('user-brand-select');
+            if (!select) return;
+
+            const currentVal = window.selectedUserBrand;
+            const uniqueBrands = Array.from(new Set(window.inventory.map(p => p.brand).filter(Boolean)));
+
+            select.innerHTML = '<option value="all">ทุกแบรนด์</option>';
+            uniqueBrands.forEach(brand => {
+                const opt = document.createElement('option');
+                opt.value = brand;
+                opt.textContent = brand;
+                if (brand === currentVal) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            if (!uniqueBrands.includes(currentVal) && currentVal !== 'all') {
+                window.selectedUserBrand = 'all';
+                select.value = 'all';
+            }
+        };
+
+        window.filterUserShade = function(shade) {
+            window.selectedUserShade = shade;
+            renderUserShadePills();
+            renderUserProducts();
+        };
+
+        window.filterUserBrand = function(brand) {
+            window.selectedUserBrand = brand;
+            renderUserProducts();
+        };
+
+        window.renderUserProducts = function() {
+            const grid = document.getElementById('user-product-grid');
+            grid.innerHTML = '';
+
+            const filtered = window.inventory.filter(item => {
+                const shadeMatch = (window.selectedUserShade === 'all') || (item.shades && item.shades.includes(window.selectedUserShade));
+                const brandMatch = (window.selectedUserBrand === 'all') || (item.brand === window.selectedUserBrand);
+                return shadeMatch && brandMatch;
+            });
+
+            document.getElementById('product-count-label').innerText = `แสดง ${filtered.length} รายการ`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center theme-text-muted theme-bg-card rounded-2xl border theme-border space-y-2">
+                        <i data-lucide="package-open" class="w-8 h-8 mx-auto stroke-1"></i>
+                        <p class="text-sm font-medium">ไม่พบเครื่องสำอางที่ตรงกับเงื่อนไขการค้นหา</p>
+                    </div>
+                `;
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "theme-bg-card rounded-2xl p-4 sm:p-5 shadow-sm border theme-border flex items-center space-x-4 hover:shadow-md transition-shadow";
+                card.innerHTML = `
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 theme-bg-subcard rounded-xl flex flex-col items-center justify-center theme-accent-text font-bold text-xs flex-shrink-0 border theme-border">
+                        <span>${p.category}</span>
+                    </div>
+                    <div class="space-y-1 overflow-hidden flex-1">
+                        <h4 class="font-bold theme-text-main text-sm sm:text-base truncate">${p.name}</h4>
+                        <p class="text-xs sm:text-sm theme-text-muted font-medium">แบรนด์: <span class="theme-accent-text font-semibold">${p.brand}</span></p>
+                        <div class="flex flex-wrap gap-1 pt-1">
+                            ${p.shades ? p.shades.map(s => `<span class="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold theme-bg-subcard theme-accent-text border theme-border">${s}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderSellerInventory = function() {
+            const grid = document.getElementById('seller-inventory-grid');
+            const badge = document.getElementById('seller-total-badge');
+            grid.innerHTML = '';
+
+            badge.innerText = `${window.inventory.length} รายการ`;
+
+            if (window.inventory.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-xs theme-text-muted py-8">ยังไม่มีสินค้าในระบบ</p>`;
+                return;
+            }
+
+            window.inventory.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "theme-bg-card rounded-xl p-4 border theme-border shadow-sm flex items-start space-x-3";
+                card.innerHTML = `
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 theme-bg-subcard rounded-lg flex items-center justify-center theme-accent-text font-bold text-[10px] sm:text-xs text-center p-1 flex-shrink-0 border theme-border">
+                        <span>${p.category}</span>
+                    </div>
+                    <div class="space-y-1 flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <h5 class="font-bold theme-text-main text-xs sm:text-sm truncate">${p.name}</h5>
+                            <button onclick="deleteProduct('${p.id}')" class="theme-text-muted hover:text-red-500 p-1 transition-colors" title="ลบสินค้า">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p class="text-[11px] sm:text-xs theme-text-muted">${p.brand}</p>
+                        <div class="flex flex-wrap gap-1 pt-0.5">
+                            ${p.shades ? p.shades.map(s => `<span class="px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-semibold theme-bg-subcard theme-accent-text border theme-border">${s}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
